@@ -43,7 +43,7 @@ public class StatisticsServiceImpl implements IStatisticsService {
     @Override
     public List<PieStatisticsVo> passStatistics(StatisticsRequest request) {
         //如果是老师
-        if (SecurityUtils.hasRole("teacher")) {
+        if (SecurityUtils.hasRole("teacher") && !SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
             request.setTeacherId(SecurityUtils.getUserId());
         }
         request.setStatus(GradeStatusEnum.GRADE_STATUS_1.getValue());
@@ -67,7 +67,7 @@ public class StatisticsServiceImpl implements IStatisticsService {
     @Override
     public BarStatisticsVo rankStatistics(StatisticsRequest request) {
         //如果是老师
-        if (SecurityUtils.hasRole("teacher")) {
+        if (SecurityUtils.hasRole("teacher")&&!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
             request.setTeacherId(SecurityUtils.getUserId());
         }
         request.setStatus(GradeStatusEnum.GRADE_STATUS_1.getValue());
@@ -93,7 +93,7 @@ public class StatisticsServiceImpl implements IStatisticsService {
     @Override
     public Long averageStatistics(StatisticsRequest request) {
         //如果是老师
-        if (SecurityUtils.hasRole("teacher")) {
+        if (SecurityUtils.hasRole("teacher")&&!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
             request.setTeacherId(SecurityUtils.getUserId());
         }
         request.setStatus(GradeStatusEnum.GRADE_STATUS_1.getValue());

@@ -9,22 +9,22 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label="课程名称" prop="courseId">-->
-<!--        <el-input-->
-<!--            v-model="queryParams.courseId"-->
-<!--            placeholder="请输入课程名称"-->
-<!--            clearable-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="学生成绩" prop="score">-->
-<!--        <el-input-->
-<!--            v-model="queryParams.score"-->
-<!--            placeholder="请输入学生成绩"-->
-<!--            clearable-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="课程名称" prop="courseId">-->
+      <!--        <el-input-->
+      <!--            v-model="queryParams.courseId"-->
+      <!--            placeholder="请输入课程名称"-->
+      <!--            clearable-->
+      <!--            @keyup.enter="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
+      <!--      <el-form-item label="学生成绩" prop="score">-->
+      <!--        <el-input-->
+      <!--            v-model="queryParams.score"-->
+      <!--            placeholder="请输入学生成绩"-->
+      <!--            clearable-->
+      <!--            @keyup.enter="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <el-form-item label="及格" prop="isPassed">
         <el-select v-model="queryParams.isPassed" placeholder="请选择及格" clearable>
           <el-option
@@ -45,22 +45,22 @@
           />
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="老师" prop="teacherId">-->
-<!--        <el-input-->
-<!--            v-model="queryParams.teacherId"-->
-<!--            placeholder="请输入老师"-->
-<!--            clearable-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="学生" prop="userId">-->
-<!--        <el-input-->
-<!--            v-model="queryParams.userId"-->
-<!--            placeholder="请输入学生"-->
-<!--            clearable-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="老师" prop="teacherId">-->
+      <!--        <el-input-->
+      <!--            v-model="queryParams.teacherId"-->
+      <!--            placeholder="请输入老师"-->
+      <!--            clearable-->
+      <!--            @keyup.enter="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
+      <!--      <el-form-item label="学生" prop="userId">-->
+      <!--        <el-input-->
+      <!--            v-model="queryParams.userId"-->
+      <!--            placeholder="请输入学生"-->
+      <!--            clearable-->
+      <!--            @keyup.enter="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -148,6 +148,10 @@
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['manage:gradeInfo:edit']">修改
           </el-button>
+          <el-button link type="primary" icon="Plus" @click="handleAudit(scope.row)"
+                     v-hasPermi="['manage:audit:add']">
+            审核
+          </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['manage:gradeInfo:remove']">删除
           </el-button>
@@ -182,16 +186,16 @@
         <!--            </el-radio>-->
         <!--          </el-radio-group>-->
         <!--        </el-form-item>-->
-<!--        <el-form-item label="审核状态" prop="status" v-if="checkPermi(['manage:gradeInfo:audit'])">-->
-<!--          <el-radio-group v-model="form.status">-->
-<!--            <el-radio-->
-<!--                v-for="dict in grade_status"-->
-<!--                :key="dict.value"-->
-<!--                :label="dict.value"-->
-<!--            >{{ dict.label }}-->
-<!--            </el-radio>-->
-<!--          </el-radio-group>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="审核状态" prop="status" v-if="checkPermi(['manage:gradeInfo:audit'])">-->
+        <!--          <el-radio-group v-model="form.status">-->
+        <!--            <el-radio-->
+        <!--                v-for="dict in grade_status"-->
+        <!--                :key="dict.value"-->
+        <!--                :label="dict.value"-->
+        <!--            >{{ dict.label }}-->
+        <!--            </el-radio>-->
+        <!--          </el-radio-group>-->
+        <!--        </el-form-item>-->
         <el-form-item label="成绩描述" prop="gradeDesc">
           <el-input v-model="form.gradeDesc" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
@@ -212,12 +216,37 @@
         </div>
       </template>
     </el-dialog>
+
+    <!-- 添加或修改审核信息对话框 -->
+    <el-dialog :title="title" v-model="openAudit" width="500px" append-to-body>
+      <el-form ref="auditInfoRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="审核状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio
+                v-for="dict in grade_status"
+                :key="dict.value"
+                :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="审核原因" prop="auditDesc">
+          <el-input v-model="form.auditDesc" type="textarea" placeholder="请输入内容"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitFormAudit">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="GradeInfo">
-import {listGradeInfo, getGradeInfo, delGradeInfo, addGradeInfo, updateGradeInfo} from "@/api/manage/gradeInfo"
-import {checkPermi} from "@/utils/permission.js";
+import {addGradeInfo, delGradeInfo, getGradeInfo, listGradeInfo, updateGradeInfo} from "@/api/manage/gradeInfo"
+import {addAuditInfo} from "@/api/manage/auditInfo.js";
 
 const {proxy} = getCurrentInstance()
 const {grade_status, is_passed} = proxy.useDict('grade_status', 'is_passed')
@@ -231,6 +260,9 @@ const single = ref(true)
 const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
+
+
+const openAudit = ref(false)
 
 const data = reactive({
   form: {},
@@ -276,6 +308,21 @@ const data = reactive({
 
 const {queryParams, form, rules} = toRefs(data)
 
+function handleAudit(row) {
+  reset()
+  form.value.gradeId = row.gradeId
+  title.value = "审核成绩"
+  openAudit.value = true
+}
+
+function submitFormAudit() {
+  addAuditInfo(form.value).then(res => {
+    proxy.$modal.msgSuccess("审核成功")
+    openAudit.value = false
+    getList()
+  })
+}
+
 /** 查询学生成绩信息列表 */
 function getList() {
   loading.value = true
@@ -288,6 +335,7 @@ function getList() {
 
 // 取消按钮
 function cancel() {
+  openAudit.value = false
   open.value = false
   reset()
 }

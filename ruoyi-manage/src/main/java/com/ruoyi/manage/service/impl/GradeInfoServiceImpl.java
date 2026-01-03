@@ -56,11 +56,11 @@ public class GradeInfoServiceImpl implements IGradeInfoService {
     @Override
     public List<GradeInfo> selectGradeInfoList(GradeInfo gradeInfo) {
         //如果是老师
-        if (SecurityUtils.hasRole("teacher")) {
+        if (SecurityUtils.hasRole("teacher")&&!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
             gradeInfo.setTeacherId(SecurityUtils.getUserId());
         }
         //如果是学生
-        if (SecurityUtils.hasRole("student")) {
+        if (SecurityUtils.hasRole("student")&&!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
             gradeInfo.setUserId(SecurityUtils.getUserId());
         }
         List<GradeInfo> gradeInfos = gradeInfoMapper.selectGradeInfoList(gradeInfo);
