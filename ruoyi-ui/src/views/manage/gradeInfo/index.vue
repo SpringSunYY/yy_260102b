@@ -3,52 +3,62 @@
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="成绩编号" prop="gradeId">
         <el-input
-          v-model="queryParams.gradeId"
-          placeholder="请输入成绩编号"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.gradeId"
+            placeholder="请输入成绩编号"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="课程名称" prop="courseId">
         <el-input
-          v-model="queryParams.courseId"
-          placeholder="请输入课程名称"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.courseId"
+            placeholder="请输入课程名称"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="学生成绩" prop="score">
         <el-input
-          v-model="queryParams.score"
-          placeholder="请输入学生成绩"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.score"
+            placeholder="请输入学生成绩"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="及格" prop="isPassed">
         <el-select v-model="queryParams.isPassed" placeholder="请选择及格" clearable>
           <el-option
-            v-for="dict in is_passed"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+              v-for="dict in is_passed"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="审核状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择审核状态" clearable>
+          <el-option
+              v-for="dict in grade_status"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="老师" prop="teacherId">
         <el-input
-          v-model="queryParams.teacherId"
-          placeholder="请输入老师"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.teacherId"
+            placeholder="请输入老师"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="学生" prop="userId">
         <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入学生"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.userId"
+            placeholder="请输入学生"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -60,59 +70,68 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['manage:gradeInfo:add']"
-        >新增</el-button>
+            type="primary"
+            plain
+            icon="Plus"
+            @click="handleAdd"
+            v-hasPermi="['manage:gradeInfo:add']"
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['manage:gradeInfo:edit']"
-        >修改</el-button>
+            type="success"
+            plain
+            icon="Edit"
+            :disabled="single"
+            @click="handleUpdate"
+            v-hasPermi="['manage:gradeInfo:edit']"
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['manage:gradeInfo:remove']"
-        >删除</el-button>
+            type="danger"
+            plain
+            icon="Delete"
+            :disabled="multiple"
+            @click="handleDelete"
+            v-hasPermi="['manage:gradeInfo:remove']"
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['manage:gradeInfo:export']"
-        >导出</el-button>
+            type="warning"
+            plain
+            icon="Download"
+            @click="handleExport"
+            v-hasPermi="['manage:gradeInfo:export']"
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="gradeInfoList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="成绩编号" align="center" prop="gradeId" />
-      <el-table-column label="课程名称" align="center" prop="courseId" />
-      <el-table-column label="学生成绩" align="center" prop="score" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="成绩编号" align="center" prop="gradeId"/>
+      <el-table-column label="课程名称" align="center" prop="courseId"/>
+      <el-table-column label="学生成绩" align="center" prop="score"/>
       <el-table-column label="及格" align="center" prop="isPassed">
         <template #default="scope">
           <dict-tag :options="is_passed" :value="scope.row.isPassed"/>
         </template>
       </el-table-column>
-      <el-table-column label="成绩描述" align="center" prop="gradeDesc" />
-      <el-table-column label="老师" align="center" prop="teacherId" />
-      <el-table-column label="学生" align="center" prop="userId" />
-      <el-table-column label="创建人" align="center" prop="createBy" />
+      <el-table-column label="审核状态" align="center" prop="status">
+        <template #default="scope">
+          <dict-tag :options="grade_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="成绩描述" align="center" prop="gradeDesc"/>
+      <el-table-column label="老师" align="center" prop="teacherId"/>
+      <el-table-column label="学生" align="center" prop="userId"/>
+      <el-table-column label="创建人" align="center" prop="createBy"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -123,52 +142,67 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['manage:gradeInfo:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['manage:gradeInfo:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                     v-hasPermi="['manage:gradeInfo:edit']">修改
+          </el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                     v-hasPermi="['manage:gradeInfo:remove']">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
     />
 
     <!-- 添加或修改学生成绩信息对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="gradeInfoRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="课程名称" prop="courseId">
-          <el-input v-model="form.courseId" placeholder="请输入课程名称" />
+          <el-input v-model="form.courseId" placeholder="请输入课程名称"/>
         </el-form-item>
         <el-form-item label="学生成绩" prop="score">
-          <el-input v-model="form.score" placeholder="请输入学生成绩" />
+          <el-input v-model="form.score" placeholder="请输入学生成绩"/>
         </el-form-item>
         <el-form-item label="及格" prop="isPassed">
           <el-radio-group v-model="form.isPassed">
             <el-radio
-              v-for="dict in is_passed"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
+                v-for="dict in is_passed"
+                :key="dict.value"
+                :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="审核状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio
+                v-for="dict in grade_status"
+                :key="dict.value"
+                :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="成绩描述" prop="gradeDesc">
-          <el-input v-model="form.gradeDesc" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.gradeDesc" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
         <el-form-item label="老师" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入老师" />
+          <el-input v-model="form.teacherId" placeholder="请输入老师"/>
         </el-form-item>
         <el-form-item label="学生" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入学生" />
+          <el-input v-model="form.userId" placeholder="请输入学生"/>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -182,10 +216,10 @@
 </template>
 
 <script setup name="GradeInfo">
-import { listGradeInfo, getGradeInfo, delGradeInfo, addGradeInfo, updateGradeInfo } from "@/api/manage/gradeInfo"
+import {listGradeInfo, getGradeInfo, delGradeInfo, addGradeInfo, updateGradeInfo} from "@/api/manage/gradeInfo"
 
-const { proxy } = getCurrentInstance()
-const { is_passed } = proxy.useDict('is_passed')
+const {proxy} = getCurrentInstance()
+const {grade_status, is_passed} = proxy.useDict('grade_status', 'is_passed')
 
 const gradeInfoList = ref([])
 const open = ref(false)
@@ -206,36 +240,40 @@ const data = reactive({
     courseId: null,
     score: null,
     isPassed: null,
+    status: null,
     gradeDesc: null,
     teacherId: null,
     userId: null,
   },
   rules: {
     courseId: [
-      { required: true, message: "课程名称不能为空", trigger: "blur" }
+      {required: true, message: "课程名称不能为空", trigger: "blur"}
     ],
     score: [
-      { required: true, message: "学生成绩不能为空", trigger: "blur" }
+      {required: true, message: "学生成绩不能为空", trigger: "blur"}
     ],
     isPassed: [
-      { required: true, message: "及格不能为空", trigger: "change" }
+      {required: true, message: "及格不能为空", trigger: "change"}
+    ],
+    status: [
+      {required: true, message: "审核状态不能为空", trigger: "change"}
     ],
     teacherId: [
-      { required: true, message: "老师不能为空", trigger: "blur" }
+      {required: true, message: "老师不能为空", trigger: "blur"}
     ],
     userId: [
-      { required: true, message: "学生不能为空", trigger: "blur" }
+      {required: true, message: "学生不能为空", trigger: "blur"}
     ],
     createBy: [
-      { required: true, message: "创建人不能为空", trigger: "blur" }
+      {required: true, message: "创建人不能为空", trigger: "blur"}
     ],
     createTime: [
-      { required: true, message: "创建时间不能为空", trigger: "blur" }
+      {required: true, message: "创建时间不能为空", trigger: "blur"}
     ],
   }
 })
 
-const { queryParams, form, rules } = toRefs(data)
+const {queryParams, form, rules} = toRefs(data)
 
 /** 查询学生成绩信息列表 */
 function getList() {
@@ -260,6 +298,7 @@ function reset() {
     courseId: null,
     score: null,
     isPassed: null,
+    status: null,
     gradeDesc: null,
     teacherId: null,
     userId: null,
@@ -332,12 +371,13 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _gradeIds = row.gradeId || ids.value
-  proxy.$modal.confirm('是否确认删除学生成绩信息编号为"' + _gradeIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm('是否确认删除学生成绩信息编号为"' + _gradeIds + '"的数据项？').then(function () {
     return delGradeInfo(_gradeIds)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")
-  }).catch(() => {})
+  }).catch(() => {
+  })
 }
 
 /** 导出按钮操作 */

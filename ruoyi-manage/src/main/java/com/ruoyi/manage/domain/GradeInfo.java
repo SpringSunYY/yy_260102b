@@ -1,133 +1,166 @@
 package com.ruoyi.manage.domain;
 
-import java.math.BigDecimal;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.math.BigDecimal;
 
 /**
  * 学生成绩信息对象 tb_grade_info
- * 
+ *
  * @author ruoyi
  * @date 2026-01-03
  */
-public class GradeInfo extends BaseEntity
-{
+public class GradeInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** 成绩编号 */
+    /**
+     * 成绩编号
+     */
     @Excel(name = "成绩编号")
     private Long gradeId;
 
-    /** 课程名称 */
+    /**
+     * 课程名称
+     */
     @Excel(name = "课程名称")
     private Long courseId;
 
-    /** 学生成绩 */
+    /**
+     * 学生成绩
+     */
     @Excel(name = "学生成绩")
     private BigDecimal score;
 
-    /** 及格 */
+    /**
+     * 及格
+     */
     @Excel(name = "及格")
     private String isPassed;
 
-    /** 成绩描述 */
+    /**
+     * 审核状态
+     */
+    @Excel(name = "审核状态")
+    private String status;
+
+    /**
+     * 成绩描述
+     */
     @Excel(name = "成绩描述")
     private String gradeDesc;
 
-    /** 老师 */
+    /**
+     * 老师
+     */
     @Excel(name = "老师")
     private Long teacherId;
+    private String teacherName;
 
-    /** 学生 */
+    /**
+     * 学生
+     */
     @Excel(name = "学生")
     private Long userId;
+    private String userName;
 
-    public void setGradeId(Long gradeId) 
-    {
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setGradeId(Long gradeId) {
         this.gradeId = gradeId;
     }
 
-    public Long getGradeId() 
-    {
+    public Long getGradeId() {
         return gradeId;
     }
 
-    public void setCourseId(Long courseId) 
-    {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 
-    public Long getCourseId() 
-    {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setScore(BigDecimal score) 
-    {
+    public void setScore(BigDecimal score) {
         this.score = score;
     }
 
-    public BigDecimal getScore() 
-    {
+    public BigDecimal getScore() {
         return score;
     }
 
-    public void setIsPassed(String isPassed) 
-    {
+    public void setIsPassed(String isPassed) {
         this.isPassed = isPassed;
     }
 
-    public String getIsPassed() 
-    {
+    public String getIsPassed() {
         return isPassed;
     }
 
-    public void setGradeDesc(String gradeDesc) 
-    {
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setGradeDesc(String gradeDesc) {
         this.gradeDesc = gradeDesc;
     }
 
-    public String getGradeDesc() 
-    {
+    public String getGradeDesc() {
         return gradeDesc;
     }
 
-    public void setTeacherId(Long teacherId) 
-    {
+    public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
     }
 
-    public Long getTeacherId() 
-    {
+    public Long getTeacherId() {
         return teacherId;
     }
 
-    public void setUserId(Long userId) 
-    {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Long getUserId() 
-    {
+    public Long getUserId() {
         return userId;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("gradeId", getGradeId())
-            .append("courseId", getCourseId())
-            .append("score", getScore())
-            .append("isPassed", getIsPassed())
-            .append("gradeDesc", getGradeDesc())
-            .append("teacherId", getTeacherId())
-            .append("userId", getUserId())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("gradeId", getGradeId())
+                .append("courseId", getCourseId())
+                .append("score", getScore())
+                .append("isPassed", getIsPassed())
+                .append("status", getStatus())
+                .append("gradeDesc", getGradeDesc())
+                .append("teacherId", getTeacherId())
+                .append("userId", getUserId())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateTime", getUpdateTime())
+                .append("remark", getRemark())
+                .toString();
     }
 }
