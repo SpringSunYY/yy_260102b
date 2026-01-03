@@ -160,8 +160,8 @@ const setOptions = (data) => {
             },
             rich: {
               icon: {fontSize: 16, color: 'inherit'},
-              name: {fontSize: 18, padding: [0, 0, 0, 10], color: '#fff'},
-              value: {fontSize: 14, padding: [10, 0, 0, 20], color: '#fff'}
+              name: {fontSize: 18, padding: [0, 0, 0, 10], color: '#000000'},
+              value: {fontSize: 14, padding: [10, 0, 0, 20], color: '#000000'}
             }
           }
         },
