@@ -182,16 +182,16 @@
         <!--            </el-radio>-->
         <!--          </el-radio-group>-->
         <!--        </el-form-item>-->
-        <el-form-item label="审核状态" prop="status" v-if="checkPermi(['manage:gradeInfo:audit'])">
-          <el-radio-group v-model="form.status">
-            <el-radio
-                v-for="dict in grade_status"
-                :key="dict.value"
-                :label="dict.value"
-            >{{ dict.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
+<!--        <el-form-item label="审核状态" prop="status" v-if="checkPermi(['manage:gradeInfo:audit'])">-->
+<!--          <el-radio-group v-model="form.status">-->
+<!--            <el-radio-->
+<!--                v-for="dict in grade_status"-->
+<!--                :key="dict.value"-->
+<!--                :label="dict.value"-->
+<!--            >{{ dict.label }}-->
+<!--            </el-radio>-->
+<!--          </el-radio-group>-->
+<!--        </el-form-item>-->
         <el-form-item label="成绩描述" prop="gradeDesc">
           <el-input v-model="form.gradeDesc" type="textarea" placeholder="请输入内容"/>
         </el-form-item>

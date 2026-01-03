@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.manage.mapper.AuditInfoMapper">
+    
+    <resultMap type="AuditInfo" id="AuditInfoResult">
+        <result property="auditId"    column="audit_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="gradeId"    column="grade_id"    />
+        <result property="score"    column="score"    />
+        <result property="status"    column="status"    />
+        <result property="auditDesc"    column="audit_desc"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectAuditInfoVo">
+        select audit_id, course_id, grade_id, score, status, audit_desc, user_id, create_time, update_time, remark from tb_audit_info
+    </sql>
+
+    <select id="selectAuditInfoList" parameterType="AuditInfo" resultMap="AuditInfoResult">
+        <include refid="selectAuditInfoVo"/>
+        <where>  
+            <if test="auditId != null "> and audit_id = #{auditId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="gradeId != null "> and grade_id = #{gradeId}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="auditDesc != null  and auditDesc != ''"> and audit_desc = #{auditDesc}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAuditInfoByAuditId" parameterType="Long" resultMap="AuditInfoResult">
+        <include refid="selectAuditInfoVo"/>
+        where audit_id = #{auditId}
+    </select>
+
+    <insert id="insertAuditInfo" parameterType="AuditInfo" useGeneratedKeys="true" keyProperty="auditId">
+        insert into tb_audit_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">course_id,</if>
+            <if test="gradeId != null">grade_id,</if>
+            <if test="score != null">score,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="auditDesc != null">audit_desc,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">#{courseId},</if>
+            <if test="gradeId != null">#{gradeId},</if>
+            <if test="score != null">#{score},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="auditDesc != null">#{auditDesc},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAuditInfo" parameterType="AuditInfo">
+        update tb_audit_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="gradeId != null">grade_id = #{gradeId},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="auditDesc != null">audit_desc = #{auditDesc},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where audit_id = #{auditId}
+    </update>
+
+    <delete id="deleteAuditInfoByAuditId" parameterType="Long">
+        delete from tb_audit_info where audit_id = #{auditId}
+    </delete>
+
+    <delete id="deleteAuditInfoByAuditIds" parameterType="String">
+        delete from tb_audit_info where audit_id in 
+        <foreach item="auditId" collection="array" open="(" separator="," close=")">
+            #{auditId}
+        </foreach>
+    </delete>
+</mapper>
