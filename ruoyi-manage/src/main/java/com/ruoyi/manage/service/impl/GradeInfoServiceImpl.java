@@ -7,6 +7,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.manage.domain.CourseInfo;
 import com.ruoyi.manage.domain.GradeInfo;
 import com.ruoyi.manage.enums.GradeStatusEnum;
+import com.ruoyi.manage.enums.IsPassedEnum;
 import com.ruoyi.manage.mapper.CourseInfoMapper;
 import com.ruoyi.manage.mapper.GradeInfoMapper;
 import com.ruoyi.manage.service.IGradeInfoService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -111,6 +113,17 @@ public class GradeInfoServiceImpl implements IGradeInfoService {
      */
     @Override
     public int updateGradeInfo(GradeInfo gradeInfo) {
+        //查询课程是否存在
+        CourseInfo courseInfo = courseInfoMapper.selectCourseInfoByCourseId(gradeInfo.getCourseId());
+        if (StringUtils.isNull(courseInfo)) {
+            throw new RuntimeException("课程不存在");
+        }
+        //如果分数大于60
+        if (gradeInfo.getScore().compareTo(new BigDecimal(60)) > 0) {
+            gradeInfo.setIsPassed(IsPassedEnum.IS_PASSED_0.getValue());
+        } else {
+            gradeInfo.setIsPassed(IsPassedEnum.IS_PASSED_1.getValue());
+        }
         gradeInfo.setUpdateTime(DateUtils.getNowDate());
         return gradeInfoMapper.updateGradeInfo(gradeInfo);
     }
