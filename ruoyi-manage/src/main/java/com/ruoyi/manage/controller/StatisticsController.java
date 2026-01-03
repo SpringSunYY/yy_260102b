@@ -44,4 +44,13 @@ public class StatisticsController extends BaseController {
     public AjaxResult rankStatistics(StatisticsRequest request) {
         return success(statisticsService.rankStatistics(request));
     }
+
+    /**
+     * 平均成绩
+     */
+    @GetMapping("average")
+    @PreAuthorize("@ss.hasPermi('manage:statistics:statistics')")
+    public AjaxResult averageStatistics(StatisticsRequest request) {
+        return success(statisticsService.averageStatistics(request));
+    }
 }

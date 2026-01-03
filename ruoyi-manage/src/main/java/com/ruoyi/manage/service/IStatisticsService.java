@@ -10,4 +10,6 @@ public interface IStatisticsService {
     List<PieStatisticsVo> passStatistics(StatisticsRequest request);
 
     BarStatisticsVo rankStatistics(StatisticsRequest request);
+
+    Long averageStatistics(StatisticsRequest request);
 }

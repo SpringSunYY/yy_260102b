@@ -16,3 +16,12 @@ export function rankStatistics(query){
         params: query
     })
 }
+
+//平均成绩
+export function averageStatistics(query){
+    return request({
+        url: '/manage/statistics/average',
+        method: 'get',
+        params: query
+    })
+}

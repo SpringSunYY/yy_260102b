@@ -9,13 +9,15 @@
 
 import PieRoseCharts from "@/components/Echarts/PieRoseCharts.vue";
 import BarAxisRankingCharts from "@/components/Echarts/BarAxisRankingCharts.vue";
-import {passedStatistics, rankStatistics} from "@/api/manage/statistics.js";
+import {averageStatistics, passedStatistics, rankStatistics} from "@/api/manage/statistics.js";
 
 const passedStatisticsData = ref([])
 const passedStatisticsName = ref('成绩通过率')
 
 const rankStatisticsData = ref({})
 const rankStatisticsName = ref('成绩排行')
+
+const averageStatisticsData=ref(0)
 const query = ref({})
 
 function getPassedStatistics() {
@@ -30,9 +32,16 @@ function getRankStatistics() {
   })
 }
 
+function getAverageStatistics() {
+  averageStatistics(query.value).then(res => {
+    averageStatisticsData.value = res.data
+  })
+}
+
 function getStatistics() {
   getPassedStatistics()
   getRankStatistics()
+  getAverageStatistics()
 }
 
 onMounted(() => {

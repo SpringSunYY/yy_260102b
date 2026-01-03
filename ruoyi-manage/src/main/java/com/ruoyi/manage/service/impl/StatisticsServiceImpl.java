@@ -87,4 +87,13 @@ public class StatisticsServiceImpl implements IStatisticsService {
         barStatisticsVo.setValues(values);
         return barStatisticsVo;
     }
+
+    @Override
+    public Long averageStatistics(StatisticsRequest request) {
+         if (!SecurityUtils.hasPermi("manage:gradeInfo:teacher")) {
+            request.setTeacherId(SecurityUtils.getUserId());
+        }
+        request.setStatus(GradeStatusEnum.GRADE_STATUS_1.getValue());
+        return statisticsMapper.averageStatistics(request);
+    }
 }

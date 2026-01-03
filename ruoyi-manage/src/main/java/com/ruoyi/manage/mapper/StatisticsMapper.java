@@ -9,4 +9,6 @@ public interface StatisticsMapper {
     List<StatisticsPo> passStatistics(StatisticsRequest request);
 
     List<StatisticsPo> rankStatistics(StatisticsRequest request);
+
+    Long averageStatistics(StatisticsRequest request);
 }
