@@ -71,7 +71,7 @@ const setOptions = (data) => {
     title: {
       text: props.chartTitle,
       textStyle: {
-        color: '#ccc'
+        color: '#409eff'
       },
       left: 'center'
     },
@@ -91,7 +91,7 @@ const setOptions = (data) => {
       show: true,
       orient: 'vertical',
       textStyle: {
-        color: '#FFF',
+        color: '#000000',
       },
       right: '5%',
       top: 'center',
@@ -168,7 +168,7 @@ const setOptions = (data) => {
         labelLine: {
           length: 10,
           length2: 10,
-          lineStyle: {color: '#fff'}
+          lineStyle: {color: '#000000'}
         }
       },
     ],

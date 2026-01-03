@@ -142,7 +142,7 @@ const updateChart = (startIndex = 0) => {
   const option = {
     title: {
       text: props.chartName,
-      textStyle: {color: '#ffffff', fontSize: 16},
+      textStyle: {color: '#409eff', fontSize: 16},
       left: 'center',
       top: '5%'
     },
