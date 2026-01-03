@@ -3,35 +3,46 @@
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="课程编号" prop="courseId">
         <el-input
-          v-model="queryParams.courseId"
-          placeholder="请输入课程编号"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.courseId"
+            placeholder="请输入课程编号"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="课程名称" prop="courseName">
         <el-input
-          v-model="queryParams.courseName"
-          placeholder="请输入课程名称"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.courseName"
+            placeholder="请输入课程名称"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="绩点" prop="credit">
         <el-input
-          v-model="queryParams.credit"
-          placeholder="请输入绩点"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.credit"
+            placeholder="请输入绩点"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item label="老师" prop="teacherId">
-        <el-input
-          v-model="queryParams.teacherId"
-          placeholder="请输入老师"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-select
+            v-model="queryParams.teacherId"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入老师名称"
+            :remote-method="remoteUserListMethod"
+            :loading="userLoading"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -42,53 +53,57 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['manage:courseInfo:add']"
-        >新增</el-button>
+            type="primary"
+            plain
+            icon="Plus"
+            @click="handleAdd"
+            v-hasPermi="['manage:courseInfo:add']"
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['manage:courseInfo:edit']"
-        >修改</el-button>
+            type="success"
+            plain
+            icon="Edit"
+            :disabled="single"
+            @click="handleUpdate"
+            v-hasPermi="['manage:courseInfo:edit']"
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['manage:courseInfo:remove']"
-        >删除</el-button>
+            type="danger"
+            plain
+            icon="Delete"
+            :disabled="multiple"
+            @click="handleDelete"
+            v-hasPermi="['manage:courseInfo:remove']"
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['manage:courseInfo:export']"
-        >导出</el-button>
+            type="warning"
+            plain
+            icon="Download"
+            @click="handleExport"
+            v-hasPermi="['manage:courseInfo:export']"
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="courseInfoList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="课程编号" align="center" prop="courseId" />
-      <el-table-column label="课程名称" align="center" prop="courseName" />
-      <el-table-column label="绩点" align="center" prop="credit" />
-      <el-table-column label="课程描述" align="center" prop="courseDesc" />
-      <el-table-column label="老师" align="center" prop="teacherId" />
-      <el-table-column label="创建人" align="center" prop="createBy" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="课程编号" align="center" prop="courseId"/>
+      <el-table-column label="课程名称" align="center" prop="courseName"/>
+      <el-table-column label="绩点" align="center" prop="credit"/>
+      <el-table-column label="课程描述" align="center" prop="courseDesc"/>
+      <el-table-column label="老师" align="center" prop="teacherName"/>
+      <el-table-column label="创建人" align="center" prop="createBy"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -99,40 +114,60 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['manage:courseInfo:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['manage:courseInfo:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                     v-hasPermi="['manage:courseInfo:edit']">修改
+          </el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                     v-hasPermi="['manage:courseInfo:remove']">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
     />
 
     <!-- 添加或修改课程信息对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="courseInfoRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="课程名称" prop="courseName">
-          <el-input v-model="form.courseName" placeholder="请输入课程名称" />
+          <el-input v-model="form.courseName" placeholder="请输入课程名称"/>
         </el-form-item>
         <el-form-item label="绩点" prop="credit">
-          <el-input v-model="form.credit" placeholder="请输入绩点" />
+          <el-input-number :min="0" :precision="1" :max="10" style="width: 100%" v-model="form.credit" placeholder="请输入绩点"/>
         </el-form-item>
         <el-form-item label="课程描述" prop="courseDesc">
-          <el-input v-model="form.courseDesc" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.courseDesc" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
         <el-form-item label="老师" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入老师" />
+          <el-select
+              v-model="form.teacherId"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请输入老师名称"
+              :remote-method="remoteUserListMethod"
+              :loading="userLoading"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -146,11 +181,20 @@
 </template>
 
 <script setup name="CourseInfo">
-import { listCourseInfo, getCourseInfo, delCourseInfo, addCourseInfo, updateCourseInfo } from "@/api/manage/courseInfo"
+import {listCourseInfo, getCourseInfo, delCourseInfo, addCourseInfo, updateCourseInfo} from "@/api/manage/courseInfo"
+import {allocatedUserList} from "@/api/system/role.js";
 
-const { proxy } = getCurrentInstance()
+const {proxy} = getCurrentInstance()
 
 const courseInfoList = ref([])
+const userList = ref([])
+const userLoading = ref(true)
+const userQuery = ref({
+  pageNum: 1,
+  pageSize: 100,
+  userName: null,
+  roleId: 2
+})
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
@@ -173,24 +217,24 @@ const data = reactive({
   },
   rules: {
     courseName: [
-      { required: true, message: "课程名称不能为空", trigger: "blur" }
+      {required: true, message: "课程名称不能为空", trigger: "blur"}
     ],
     credit: [
-      { required: true, message: "绩点不能为空", trigger: "blur" }
+      {required: true, message: "绩点不能为空", trigger: "blur"}
     ],
     teacherId: [
-      { required: true, message: "老师不能为空", trigger: "blur" }
+      {required: true, message: "老师不能为空", trigger: "blur"}
     ],
     createBy: [
-      { required: true, message: "创建人不能为空", trigger: "blur" }
+      {required: true, message: "创建人不能为空", trigger: "blur"}
     ],
     createTime: [
-      { required: true, message: "创建时间不能为空", trigger: "blur" }
+      {required: true, message: "创建时间不能为空", trigger: "blur"}
     ],
   }
 })
 
-const { queryParams, form, rules } = toRefs(data)
+const {queryParams, form, rules} = toRefs(data)
 
 /** 查询课程信息列表 */
 function getList() {
@@ -200,6 +244,20 @@ function getList() {
     total.value = response.total
     loading.value = false
   })
+}
+
+function getUserList() {
+  userLoading.value = true
+  allocatedUserList(userQuery.value).then(response => {
+    userList.value = response.rows
+    userLoading.value = false
+  })
+}
+
+function remoteUserListMethod(keyword) {
+  userQuery.value.pageNum = 1
+  userQuery.value.userName = keyword
+  getUserList()
 }
 
 // 取消按钮
@@ -285,12 +343,13 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _courseIds = row.courseId || ids.value
-  proxy.$modal.confirm('是否确认删除课程信息编号为"' + _courseIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm('是否确认删除课程信息编号为"' + _courseIds + '"的数据项？').then(function () {
     return delCourseInfo(_courseIds)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")
-  }).catch(() => {})
+  }).catch(() => {
+  })
 }
 
 /** 导出按钮操作 */
@@ -301,4 +360,5 @@ function handleExport() {
 }
 
 getList()
+getUserList()
 </script>
