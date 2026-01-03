@@ -120,6 +120,9 @@
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['manage:courseInfo:edit']">修改
           </el-button>
+          <el-button link type="primary" icon="Plus" @click="handleAddGradeInfo(scope.row)"
+                     v-hasPermi="['manage:gradeInfo:add']">选课
+          </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['manage:courseInfo:remove']">删除
           </el-button>
@@ -142,7 +145,8 @@
           <el-input v-model="form.courseName" placeholder="请输入课程名称"/>
         </el-form-item>
         <el-form-item label="绩点" prop="credit">
-          <el-input-number :min="0" :precision="1" :max="10" style="width: 100%" v-model="form.credit" placeholder="请输入绩点"/>
+          <el-input-number :min="0" :precision="1" :max="10" style="width: 100%" v-model="form.credit"
+                           placeholder="请输入绩点"/>
         </el-form-item>
         <el-form-item label="课程描述" prop="courseDesc">
           <el-input v-model="form.courseDesc" type="textarea" placeholder="请输入内容"/>
@@ -177,12 +181,28 @@
         </div>
       </template>
     </el-dialog>
+
+    <!-- 添加或修改学生成绩信息对话框 -->
+    <el-dialog :title="title" v-model="openGrade" width="500px" append-to-body>
+      <el-form ref="gradeInfoRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitFormGrade">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="CourseInfo">
 import {listCourseInfo, getCourseInfo, delCourseInfo, addCourseInfo, updateCourseInfo} from "@/api/manage/courseInfo"
 import {allocatedUserList} from "@/api/system/role.js";
+import {addGradeInfo} from "@/api/manage/gradeInfo.js";
 
 const {proxy} = getCurrentInstance()
 
@@ -195,6 +215,10 @@ const userQuery = ref({
   userName: null,
   roleId: 2
 })
+
+//选课
+const openGrade = ref(false)
+
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
@@ -236,6 +260,20 @@ const data = reactive({
 
 const {queryParams, form, rules} = toRefs(data)
 
+function handleAddGradeInfo(row) {
+  reset()
+  title.value = "添加选课信息"
+  form.value.courseId = row.courseId
+  openGrade.value = true
+}
+
+function submitFormGrade() {
+  addGradeInfo(form.value).then(response => {
+    proxy.$modal.msgSuccess("选课成功")
+    openGrade.value = false
+  })
+}
+
 /** 查询课程信息列表 */
 function getList() {
   loading.value = true
@@ -263,6 +301,7 @@ function remoteUserListMethod(keyword) {
 // 取消按钮
 function cancel() {
   open.value = false
+  openGrade.value = false
   reset()
 }
 

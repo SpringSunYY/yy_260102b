@@ -27,6 +27,10 @@ public class GradeInfo extends BaseEntity {
      */
     @Excel(name = "课程名称")
     private Long courseId;
+    @Excel(name = "课程名称",type = Excel.Type.EXPORT)
+    private String courseName;
+    @Excel(name = "绩点",type = Excel.Type.EXPORT)
+    private BigDecimal credit;
 
     /**
      * 学生成绩
@@ -57,6 +61,7 @@ public class GradeInfo extends BaseEntity {
      */
     @Excel(name = "老师")
     private Long teacherId;
+    @Excel(name = "老师",type = Excel.Type.EXPORT)
     private String teacherName;
 
     /**
@@ -64,7 +69,24 @@ public class GradeInfo extends BaseEntity {
      */
     @Excel(name = "学生")
     private Long userId;
+    @Excel(name = "学生",type = Excel.Type.EXPORT)
     private String userName;
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public BigDecimal getCredit() {
+        return credit;
+    }
+
+    public void setCredit(BigDecimal credit) {
+        this.credit = credit;
+    }
 
     public String getTeacherName() {
         return teacherName;
