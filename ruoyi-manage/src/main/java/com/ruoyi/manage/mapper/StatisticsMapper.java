@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StatisticsMapper {
     List<StatisticsPo> passStatistics(StatisticsRequest request);
+
+    List<StatisticsPo> rankStatistics(StatisticsRequest request);
 }

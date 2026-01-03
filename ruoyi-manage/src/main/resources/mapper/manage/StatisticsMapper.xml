@@ -21,4 +21,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         group by name
     </select>
+    <select id="rankStatistics" resultType="com.ruoyi.manage.domain.statistics.po.StatisticsPo">
+        select user_id as name,score as total
+        from tb_grade_info
+        <where>
+            <if test="courseId != null">
+                and course_id = #{courseId}
+            </if>
+            <if test="teacherId != null">
+                and teacher_id = #{teacherId}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+        order by score desc
+    </select>
 </mapper>

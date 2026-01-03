@@ -8,7 +8,7 @@ import java.util.List;
 public class BarStatisticsVo {
    private List<String> names;
 
-    private List<Long> totals;
+    private List<Long> values;
 
     public List<String> getNames() {
         return names;
@@ -18,11 +18,11 @@ public class BarStatisticsVo {
         this.names = names;
     }
 
-    public List<Long> getTotals() {
-        return totals;
+    public List<Long> getValues() {
+        return values;
     }
 
-    public void setTotals(List<Long> totals) {
-        this.totals = totals;
+    public void setValues(List<Long> values) {
+        this.values = values;
     }
 }

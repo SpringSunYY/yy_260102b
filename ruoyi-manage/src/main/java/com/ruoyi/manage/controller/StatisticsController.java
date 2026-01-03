@@ -35,4 +35,13 @@ public class StatisticsController extends BaseController {
     public AjaxResult passStatistics(StatisticsRequest request) {
         return success(statisticsService.passStatistics(request));
     }
+
+    /**
+     * 学生成绩排行
+     */
+    @GetMapping("rank")
+    @PreAuthorize("@ss.hasPermi('manage:statistics:statistics')")
+    public AjaxResult rankStatistics(StatisticsRequest request) {
+        return success(statisticsService.rankStatistics(request));
+    }
 }

@@ -7,3 +7,12 @@ export function passedStatistics(query){
         params: query
     })
 }
+
+
+export function rankStatistics(query){
+    return request({
+        url: '/manage/statistics/rank',
+        method: 'get',
+        params: query
+    })
+}
