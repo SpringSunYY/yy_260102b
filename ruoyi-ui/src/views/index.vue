@@ -175,8 +175,10 @@ function getStatistics() {
 }
 
 onMounted(() => {
-  getList()
-  getStatistics()
+  if (checkPermi('manage:statistics:statistics')) {
+    getList()
+    getStatistics()
+  }
 })
 
 </script>

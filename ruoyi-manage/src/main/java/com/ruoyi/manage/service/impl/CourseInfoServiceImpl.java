@@ -47,6 +47,10 @@ public class CourseInfoServiceImpl implements ICourseInfoService {
      */
     @Override
     public List<CourseInfo> selectCourseInfoList(CourseInfo courseInfo) {
+        //如果是老师
+        if (SecurityUtils.hasRole("teacher")) {
+            courseInfo.setTeacherId(SecurityUtils.getUserId());
+        }
         List<CourseInfo> courseInfos = courseInfoMapper.selectCourseInfoList(courseInfo);
         for (CourseInfo info : courseInfos) {
             SysUser sysUser = sysUserService.selectUserById(info.getTeacherId());

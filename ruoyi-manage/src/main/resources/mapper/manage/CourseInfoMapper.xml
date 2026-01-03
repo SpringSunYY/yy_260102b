@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.manage.mapper.CourseInfoMapper">
-    
+
     <resultMap type="CourseInfo" id="CourseInfoResult">
         <result property="courseId"    column="course_id"    />
         <result property="courseName"    column="course_name"    />
@@ -22,15 +22,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectCourseInfoList" parameterType="CourseInfo" resultMap="CourseInfoResult">
         <include refid="selectCourseInfoVo"/>
-        <where>  
-            <if test="courseId != null "> and course_id = #{courseId}</if>
-            <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
-            <if test="credit != null "> and credit = #{credit}</if>
-            <if test="courseDesc != null  and courseDesc != ''"> and course_desc = #{courseDesc}</if>
-            <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
+        <where>
+            <if test="courseId != null ">and course_id = #{courseId}</if>
+            <if test="courseName != null  and courseName != ''">and course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="credit != null ">and credit = #{credit}</if>
+            <if test="courseDesc != null  and courseDesc != ''">and course_desc = #{courseDesc}</if>
+            <if test="teacherId != null ">and teacher_id = #{teacherId}</if>
         </where>
+        order by create_time desc
     </select>
-    
+
     <select id="selectCourseInfoByCourseId" parameterType="Long" resultMap="CourseInfoResult">
         <include refid="selectCourseInfoVo"/>
         where course_id = #{courseId}
@@ -80,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteCourseInfoByCourseIds" parameterType="String">
-        delete from tb_course_info where course_id in 
+        delete from tb_course_info where course_id in
         <foreach item="courseId" collection="array" open="(" separator="," close=")">
             #{courseId}
         </foreach>

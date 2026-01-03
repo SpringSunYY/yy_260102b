@@ -55,6 +55,14 @@ public class GradeInfoServiceImpl implements IGradeInfoService {
      */
     @Override
     public List<GradeInfo> selectGradeInfoList(GradeInfo gradeInfo) {
+        //如果是老师
+        if (SecurityUtils.hasRole("teacher")) {
+            gradeInfo.setTeacherId(SecurityUtils.getUserId());
+        }
+        //如果是学生
+        if (SecurityUtils.hasRole("student")) {
+            gradeInfo.setUserId(SecurityUtils.getUserId());
+        }
         List<GradeInfo> gradeInfos = gradeInfoMapper.selectGradeInfoList(gradeInfo);
         for (GradeInfo info : gradeInfos) {
             SysUser sysUser = sysUserService.selectUserById(info.getTeacherId());
@@ -123,6 +131,10 @@ public class GradeInfoServiceImpl implements IGradeInfoService {
             gradeInfo.setIsPassed(IsPassedEnum.IS_PASSED_0.getValue());
         } else {
             gradeInfo.setIsPassed(IsPassedEnum.IS_PASSED_1.getValue());
+        }
+        //如果课程审核已经通过
+        if (gradeInfo.getStatus().equals(GradeStatusEnum.GRADE_STATUS_1.getValue())) {
+            throw new RuntimeException("课程审核已经通过,不可修改");
         }
         gradeInfo.setUpdateTime(DateUtils.getNowDate());
         return gradeInfoMapper.updateGradeInfo(gradeInfo);
