@@ -149,7 +149,7 @@
                      v-hasPermi="['manage:gradeInfo:edit']">修改
           </el-button>
           <el-button link type="primary" icon="Plus" @click="handleAudit(scope.row)"
-                     v-hasPermi="['manage:audit:add']">
+                     v-hasPermi="['manage:auditInfo:add']">
             审核
           </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
